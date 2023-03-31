@@ -1,0 +1,18 @@
+.shopCard {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 15px;
+  box-shadow:  1px 1px 4px gray;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.shopCard:hover {
+  box-shadow:  3px 3px 7px gray;
+  cursor: pointer;
+}
+
+  .shopCard_inner {
+    padding-left: 20px;
+  }

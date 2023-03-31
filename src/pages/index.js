@@ -1,8 +1,77 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import React, {useState, useEffect} from 'react';
+import Head from 'next/head';
+import styles from '../styles/Home.module.scss';
+import {useRouter} from 'next/router';
+import axios from 'axios';
+import {
+  Container,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select} from '@mui/material';
 
-export default function Home() {
+/**
+ * Homeコンポーネント
+ * @param {*} props
+ * @return {Component}
+ */
+export default function Home(props) {
+  const router = useRouter();
+
+  const [range, setRange] = useState(3);
+  const [genre, setGenre] = useState('');
+  const [coords, setCoords] = useState(undefined);
+  const [presentPosition, setPresentPosition] = useState('位置情報を取得中です');
+
+  const genreList = props.genre;
+
+  useEffect(() => {
+    ;(async () => {
+      if (navigator.geolocation) { // navigatorの使用可能チェック
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          setCoords(
+              {
+                // 実際はこちらを使用
+                // lat: position.coords.latitude, // 緯度
+                // lng: position.coords.longitude // 経度
+
+                // 東京都 千代田区 神田花岡町
+                lat: 35.698619, // 緯度
+                lng: 139.772908, // 経度
+              });
+          const address = await axios.get('/api/ReverseGeocode');
+          const addressElement = address.data.Property.AddressElement;
+          setPresentPosition(
+              addressElement[0].Name + ' ' +
+              addressElement[1].Name + ' ' +
+              addressElement[2].Name);
+        });
+      } else { // navigator使用不可
+        setPresentPosition('位置情報が使用できません');
+      }
+    })();
+  }, []);
+
+  /**
+   * 一覧ページへ遷移
+   */
+  const listPage = () => {
+    const params = {
+      lat: coords.lat, // 緯度
+      lng: coords.lng, // 経度
+      range, // 半径
+      genre, // お店ジャンル
+      start: 1, // 取得位置
+      count: 10, // 最大取得数
+      format: 'json', // レスポンス形式
+    };
+    router.push({
+      pathname: '/list',
+      query: params,
+    });
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -12,58 +81,71 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        <Container maxWidth="md">
+          <p>トップページ</p>
+          <p>現在位置：{presentPosition}</p>
+          <div className={styles.input_layout}>
+            <FormControl fullWidth>
+              <InputLabel id="search-range-label">検索範囲</InputLabel>
+              <Select
+                labelId="search-range-label"
+                id="search-range"
+                defaultValue={3}
+                value={range}
+                label="Range"
+                onChange={(val) => setRange(val.target.value)}
+              >
+                <MenuItem value={1}>300m</MenuItem>
+                <MenuItem value={2}>500m</MenuItem>
+                <MenuItem value={3} selected>1000m</MenuItem>
+                <MenuItem value={4}>2000m</MenuItem>
+                <MenuItem value={5}>3000m</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="search-genre-label">ジャンル</InputLabel>
+              <Select
+                labelId="search-genre-label"
+                id="search-genre"
+                defaultValue=''
+                value={genre}
+                label="Genre"
+                onChange={(val) => setGenre(val.target.value)}
+              >
+                <MenuItem value=''>指定なし</MenuItem>
+                {genreList.map((val, i) => {
+                  return (
+                    <MenuItem key={i} value={val.code}>{val.name}</MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            <Button
+              disabled={coords === undefined}
+              variant='contained'
+              onClick={listPage}>検索</Button>
+          </div>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        </Container>
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
       </footer>
     </div>
-  )
+  );
 }
+
+export const getServerSideProps = async (context) => {
+  const url =
+    `http://webservice.recruit.co.jp/hotpepper/genre/v1/?key=${process.env.NEXT_PUBLIC_HOT_PEPPER_KEY}&format=json`;
+
+  const genre = await axios.get(url);
+  // console.log(genre.data.results.genre);
+
+  return {
+    props: {
+      genre: genre.data.results.genre,
+    },
+  };
+};
