@@ -11,6 +11,8 @@ import {
   InputLabel,
   MenuItem,
   Select} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Header from '../components/common/header';
 
 /**
@@ -129,11 +131,16 @@ export default function Home(props) {
             <Button
               disabled={coords === undefined}
               variant='contained'
-              onClick={listPage}>検索</Button>
+              onClick={listPage}
+              startIcon={<SearchIcon></SearchIcon>}>検索</Button>
 
 
             <nav>
-              <Link href='/favorite'>お気に入り</Link>
+              <Link href='/favorite'>
+                <Button
+                  variant='outlined'
+                  startIcon={<FavoriteIcon></FavoriteIcon>}>お気に入り</Button>
+              </Link>
             </nav>
           </div>
 

@@ -20,11 +20,14 @@ export default function Detail(props) {
   const shopDetail = props.shop;
   const router = useRouter();
 
+  // お気に入り登録
   const setFavorite = () => {
     const myStorage = localStorage;
     const gourmetObject = {
       id: shopDetail.id,
       name: shopDetail.name,
+      genre: shopDetail.genre.name,
+      budget: shopDetail.budget.name,
       access: shopDetail.access,
       address: shopDetail.address,
       photo: shopDetail.photo.pc.l,

@@ -3,9 +3,15 @@ import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import {Container, Grid, Link} from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import TrainIcon from '@mui/icons-material/Train';
+import MapIcon from '@mui/icons-material/Map';
+import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
+
 import Header from '../components/common/header';
 
-import styles from '../styles/List.module.scss';
+// import styles from '../styles/List.module.scss';
+import styles from '../styles/Favorite.module.scss';
 
 /**
  * Favoriteコンポーネント
@@ -13,8 +19,6 @@ import styles from '../styles/List.module.scss';
  * @return {Component}
  */
 export default function Favorite() {
-  // console.log(props.shop);
-  // const shopDetail = props.shop;
   const router = useRouter();
 
   const [favoriteList, setFavoriteList] = useState([]);
@@ -45,28 +49,42 @@ export default function Favorite() {
 
       <Header></Header>
       <main className={styles.main}>
-        <Link href='/'>戻る</Link>
         <Container maxWidth='md'>
-          <p>お気に入りのお店</p>
+          <div className={styles.title_box}>
+            <Link href='/'>
+              <ArrowBackIosIcon fontSize='large' style={{color: '#333333'}}/>
+            </Link>
+            <h2>お気に入りのお店</h2>
+          </div>
           <Grid container spacing={3} alignItems='center'>
             {favoriteList.map((val, i) => {
               return (
                 <Grid item key={i} xs={12}>
                   <div
-                    className={styles.shopCard}
+                    className={styles.fav_card}
                     onClick={() => detailPage(val.id)}>
                     <Image
                       src={val.photo}
                       width={150}
                       height={150}
                       alt={val.name}
-                      style={{borderRadius: '5px'}}
+                      style={{border: '1px solid #CCCCCC'}}
                     />
-                    <div className={styles.shopCard_inner}>
-                      {/* <p>{val.genre.name}</p> */}
-                      <p style={{fontSize: '1.4rem'}}>{val.name}</p>
-                      <p>{val.access}</p>
-                      <p>{val.address}</p>
+                    <div className={styles.fav_card_inner}>
+                      <p className={styles.genre}>{val.genre}</p>
+                      <p className={styles.name}>{val.name}</p>
+                      <div className={styles.access}>
+                        <TrainIcon />
+                        <p>{val.access}</p>
+                      </div>
+                      <div className={styles.address}>
+                        <MapIcon />
+                        <p>{val.address}</p>
+                      </div>
+                      <div className={styles.budget}>
+                        <CurrencyYenIcon />
+                        <p>{val.budget}</p>
+                      </div>
                     </div>
                   </div>
                 </Grid>

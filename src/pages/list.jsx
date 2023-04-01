@@ -94,7 +94,7 @@ export default function List(props) {
               return (
                 <Grid item key={i} xs={12}>
                   <div
-                    className={styles.shopCard}
+                    className={styles.shop_card}
                     onClick={() => detailPage(val.id)}>
                     <Image
                       src={val.photo.pc.l}
@@ -103,7 +103,7 @@ export default function List(props) {
                       alt={val.name}
                       style={{borderRadius: '5px'}}
                     />
-                    <div className={styles.shopCard_inner}>
+                    <div className={styles.shop_card_inner}>
                       <p>{val.genre.name}</p>
                       <p style={{fontSize: '1.4rem'}}>{val.name}</p>
                       <p>{val.access}</p>

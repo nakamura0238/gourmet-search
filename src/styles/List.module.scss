@@ -1,4 +1,4 @@
-.shopCard {
+.shop_card {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -8,11 +8,11 @@
   transition: 0.3s;
 }
 
-.shopCard:hover {
+.shop_card:hover {
   box-shadow:  3px 3px 7px gray;
   cursor: pointer;
 }
 
-  .shopCard_inner {
+  .shop_card_inner {
     padding-left: 20px;
   }
