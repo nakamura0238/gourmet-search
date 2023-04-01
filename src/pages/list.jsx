@@ -5,6 +5,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import {buildListRequest} from '../functions/buildRequest';
 import {Container, Grid, Link, Button} from '@mui/material';
+import Header from '../components/common/header';
 
 import styles from '../styles/List.module.scss';
 
@@ -72,8 +73,9 @@ export default function List(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Header></Header>
       <main className={styles.main}>
-        <p>一覧ページ</p>
+        <p>周辺のお店</p>
         <Link href='/'>戻る</Link>
         <Container maxWidth="md">
 

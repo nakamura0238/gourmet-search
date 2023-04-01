@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from '../styles/Home.module.scss';
 import {useRouter} from 'next/router';
 import axios from 'axios';
@@ -10,6 +11,7 @@ import {
   InputLabel,
   MenuItem,
   Select} from '@mui/material';
+import Header from '../components/common/header';
 
 /**
  * Homeコンポーネント
@@ -80,10 +82,13 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Header></Header>
+
       <main className={styles.main}>
 
         <Container maxWidth="md">
-          <p>トップページ</p>
+          <p>近くのレストランを検索できます</p>
+          <p>周辺のお店を探す</p>
           <p>現在位置：{presentPosition}</p>
           <div className={styles.input_layout}>
             <FormControl fullWidth>
@@ -125,6 +130,11 @@ export default function Home(props) {
               disabled={coords === undefined}
               variant='contained'
               onClick={listPage}>検索</Button>
+
+
+            <nav>
+              <Link href='/favorite'>お気に入り</Link>
+            </nav>
           </div>
 
         </Container>

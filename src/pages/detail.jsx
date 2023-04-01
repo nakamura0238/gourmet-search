@@ -6,6 +6,9 @@ import styles from '../styles/Home.module.scss';
 import axios from 'axios';
 import {buildDetailRequest} from '../functions/buildRequest';
 import {Container} from '@mui/material';
+import {toast} from 'react-hot-toast';
+import {getIndex} from '../functions/getIndex';
+import Header from '../components/common/header';
 
 /**
  * Detailコンポーネント
@@ -13,12 +16,43 @@ import {Container} from '@mui/material';
  * @return {Component}
  */
 export default function Detail(props) {
-  // console.log(props.shop[0]);
-  const shopDetail = props.shop[0];
+  console.log(props.shop);
+  const shopDetail = props.shop;
   const router = useRouter();
 
-  return (
+  const setFavorite = () => {
+    const myStorage = localStorage;
+    const gourmetObject = {
+      id: shopDetail.id,
+      name: shopDetail.name,
+      access: shopDetail.access,
+      address: shopDetail.address,
+      photo: shopDetail.photo.pc.l,
+    };
+    if (myStorage.getItem('favorite-gourmet')) {
+      // お気に入りリスト取得
+      const gourmetList = JSON.parse(myStorage.getItem('favorite-gourmet'));
 
+      // 店が登録されているか確認
+      const found = getIndex(shopDetail.id, gourmetList, 'id');
+      console.log(found);
+
+      if (found == -1) { // 未登録の場合
+        gourmetList.push(gourmetObject);
+        toast.success('お気に入り登録しました');
+      } else { // 登録済みの場合
+        gourmetList.splice(found, 1);
+        toast.error('お気に入り解除しました');
+      }
+      // localStorageに保存
+      myStorage.setItem('favorite-gourmet', JSON.stringify(gourmetList));
+    } else {
+      console.log('オブジェクトなし');
+      myStorage.setItem('favorite-gourmet', JSON.stringify([gourmetObject]));
+    }
+  };
+
+  return (
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
@@ -26,9 +60,10 @@ export default function Detail(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Header></Header>
       <main className={styles.main}>
         <Container maxWidth='md'>
-          <p>詳細ページ</p>
+          <button id='favBtn' onClick={setFavorite}>お気に入り</button>
           <button onClick={() => router.back() }>戻る</button>
           <div>
             <p>店名：{shopDetail.name}</p>
@@ -68,10 +103,11 @@ export const getServerSideProps = async (context) => {
     return {
       props: {
         params: context.query,
-        shop,
+        shop: shop[0],
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       redirect: {
         permanent: false,
