@@ -2,10 +2,17 @@ import React from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
-import styles from '../styles/Home.module.scss';
+import Link from 'next/link';
+import styles from '../styles/Detail.module.scss';
 import axios from 'axios';
 import {buildDetailRequest} from '../functions/buildRequest';
-import {Container} from '@mui/material';
+import {Container, Button} from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import TrainIcon from '@mui/icons-material/Train';
+import MapIcon from '@mui/icons-material/Map';
+import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import {toast} from 'react-hot-toast';
 import {getIndex} from '../functions/getIndex';
 import Header from '../components/common/header';
@@ -20,6 +27,20 @@ export default function Detail(props) {
   const shopDetail = props.shop;
   const router = useRouter();
 
+  const shopData = [
+    {label: '店名', content: shopDetail.name},
+    {label: 'アクセス', content: shopDetail.access},
+    {label: '住所', content: shopDetail.address},
+    {label: '営業時間', content: shopDetail.open},
+    {label: '定休日', content: shopDetail.close},
+    {label: 'コース', content: shopDetail.course},
+    {label: '飲み放題', content: shopDetail.free_drink},
+    {label: '食べ放題', content: shopDetail.free_food},
+    {label: '個室', content: shopDetail.private_room},
+    {label: '禁煙席', content: shopDetail.non_smoking},
+    {label: 'カード決済', content: shopDetail.card},
+  ];
+
   // お気に入り登録
   const setFavorite = () => {
     const myStorage = localStorage;
@@ -33,12 +54,11 @@ export default function Detail(props) {
       photo: shopDetail.photo.pc.l,
     };
     if (myStorage.getItem('favorite-gourmet')) {
-      // お気に入りリスト取得
+      // お気に入りリスト取得 (localStorage)
       const gourmetList = JSON.parse(myStorage.getItem('favorite-gourmet'));
 
-      // 店が登録されているか確認
+      // 店が登録されているか確認 (添字検索)
       const found = getIndex(shopDetail.id, gourmetList, 'id');
-      console.log(found);
 
       if (found == -1) { // 未登録の場合
         gourmetList.push(gourmetObject);
@@ -50,7 +70,7 @@ export default function Detail(props) {
       // localStorageに保存
       myStorage.setItem('favorite-gourmet', JSON.stringify(gourmetList));
     } else {
-      console.log('オブジェクトなし');
+      // localStorageに保存
       myStorage.setItem('favorite-gourmet', JSON.stringify([gourmetObject]));
     }
   };
@@ -66,35 +86,87 @@ export default function Detail(props) {
       <Header></Header>
       <main className={styles.main}>
         <Container maxWidth='md'>
-          <button id='favBtn' onClick={setFavorite}>お気に入り</button>
-          <button onClick={() => router.back() }>戻る</button>
+
+          <div className={styles.title_box}>
+            {/* <Link href='/'>
+              <ArrowBackIosIcon fontSize='large' style={{color: '#333333'}}/>
+            </Link> */}
+            <button onClick={() => router.back() }>
+              <ArrowBackIosIcon fontSize='large' style={{color: '#333333'}}/>
+            </button>
+            <h2>お店の詳細情報</h2>
+          </div>
+
           <div>
-            <p>店名：{shopDetail.name}</p>
-            <p>ジャンル：{shopDetail.genre.name}</p>
-            <p>予算：{shopDetail.budget.average}</p>
-            <p>住所：{shopDetail.address}</p>
-            <p>アクセス：{shopDetail.access}</p>
-            <p>営業時間：{shopDetail.open}</p>
-            <p>定休日：{shopDetail.close}</p>
-            <p>コース：{shopDetail.course}</p>
-            <p>飲み放題：{shopDetail.free_drink}</p>
-            <p>食べ放題：{shopDetail.free_food}</p>
-            <p>個室：{shopDetail.private_room}</p>
-            <p>カード決済：{shopDetail.card}</p>
-            <p>禁煙席：{shopDetail.non_smoking}</p>
-            <Image
-              src={shopDetail.photo.pc.l}
-              width={200}
-              height={200}
-              alt={shopDetail.name}
-              priority={true}
-            />
+            <div className={styles.shop_overview_container}>
+              <div className={styles.shop_top}>
+                <Image
+                  src={shopDetail.photo.pc.l}
+                  width={200}
+                  height={200}
+                  alt={shopDetail.name}
+                  priority={true}
+                  style={{border: '1px solid #CCCCCC'}}
+                />
+                <div className={styles.shop_top_inner}>
+                  <p>{shopDetail.genre.name}</p>
+                  <h2>{shopDetail.name}</h2>
+                  <Button
+                    variant='outlined'
+                    startIcon={<FavoriteIcon></FavoriteIcon>}
+                    onClick={setFavorite} >お気に入り</Button>
+                </div>
+              </div>
+              <div className={styles.access}>
+                <TrainIcon />
+                <p>{shopDetail.access}</p>
+              </div>
+              <div className={styles.address}>
+                <MapIcon />
+                <p>{shopDetail.address}</p>
+              </div>
+              <div className={styles.budget}>
+                <CurrencyYenIcon />
+                <p>{shopDetail.budget.average}</p>
+              </div>
+            </div>
+            <div className={styles.link_btn_box}>
+              <Button
+                variant='outlined'
+                href={shopDetail.urls.pc}
+                target='_blank'
+                startIcon={<EventAvailableIcon></EventAvailableIcon>}>
+                  予約サイトへ
+              </Button>
+              <Button
+                variant='outlined'
+                target='_blank'
+                href={`https://www.google.com/maps/search/?api=1&query=${shopDetail.lat},${shopDetail.lng}`}
+                startIcon={<MapIcon></MapIcon>}>
+                  マップを開く
+              </Button>
+            </div>
+
+            <p className={styles.shop_data}>店舗情報</p>
+            <table className={styles.data_table}>
+              <tbody>
+                {shopData.map((val, i) => {
+                  return (
+                    <tr key={i}>
+                      <td className={styles.label}>{val.label}</td>
+                      <td className={styles.content}>{val.content}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </Container>
       </main>
     </div>
   );
 }
+
 
 export const getServerSideProps = async (context) => {
   try {
