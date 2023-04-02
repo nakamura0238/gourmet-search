@@ -13,6 +13,7 @@ import {
   Select} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import {setCookie} from 'nookies';
 import Header from '../components/common/header';
 
 /**
@@ -61,6 +62,9 @@ export default function Home(props) {
    * 一覧ページへ遷移
    */
   const listPage = () => {
+    const start = {
+      start: 1,
+    };
     const params = {
       lat: coords.lat, // 緯度
       lng: coords.lng, // 経度
@@ -70,9 +74,12 @@ export default function Home(props) {
       count: 10, // 最大取得数
       format: 'json', // レスポンス形式
     };
+    setCookie(null, 'gourmetInfo', JSON.stringify(params), {
+      maxAge: 60 * 60 * 24 * 30,
+    });
     router.push({
       pathname: '/list',
-      query: params,
+      query: start,
     });
   };
 

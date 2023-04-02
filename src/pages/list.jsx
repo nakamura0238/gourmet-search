@@ -14,6 +14,8 @@ import Header from '../components/common/header';
 
 import styles from '../styles/List.module.scss';
 
+import {parseCookies} from 'nookies';
+
 /**
  * Listコンポーネント
  * @param {*} props
@@ -25,8 +27,6 @@ export default function List(props) {
   const gourmetList = props.shop;
   const paging = props.paging;
 
-  // console.log(router.query);
-  // console.log(props);
 
   const detailPage = (shopId) => {
     const params = {
@@ -40,33 +40,21 @@ export default function List(props) {
   };
 
   const nextPage = () => {
-    const params = {
-      lat: query.lat, // 緯度
-      lng: query.lng, // 経度
-      range: query.range, // 半径
-      genre: query.genre, // お店ジャンル
-      start: parseInt(query.start) + parseInt(query.count), // 取得位置
-      count: 10, // 最大取得数
-      format: 'json', // レスポンス形式
+    const start = {
+      start: parseInt(query.start) + 10,
     };
     router.push({
       pathname: '/list',
-      query: params,
+      query: start,
     });
   };
   const prevPage = () => {
-    const params = {
-      lat: query.lat, // 緯度
-      lng: query.lng, // 経度
-      range: query.range, // 半径
-      genre: query.genre, // お店ジャンル
-      start: parseInt(query.start) - parseInt(query.count), // 取得位置
-      count: 10, // 最大取得数
-      format: 'json', // レスポンス形式
+    const start = {
+      start: parseInt(query.start) - 10,
     };
     router.push({
       pathname: '/list',
-      query: params,
+      query: start,
     });
   };
 
@@ -158,21 +146,28 @@ export default function List(props) {
 
 export const getServerSideProps = async (context) => {
   try {
-    const query = context.query;
-    const url = buildListRequest(query);
+    // Cookie取得
+    const cookie = parseCookies(context);
+    const params = JSON.parse(cookie.gourmetInfo);
 
+    const start = parseInt(context.query.start);
+    const url = buildListRequest(params, start);
+    console.log(url);
+
+    // ページネーション用フラグ
     let canPrev = false;
     let canNext = false;
 
+    // お店取得
     const gourmet = await axios.get(url);
     const shop = gourmet.data.results.shop;
     const shopCount = gourmet.data.results.results_available;
 
-    if ((parseInt(query.start) - parseInt(query.count)) > 0) {
+    // ページネーション判定
+    if ((start - parseInt(params.count)) > 0) {
       canPrev = true;
     }
-
-    if ((parseInt(query.start) + parseInt(query.count) - 1) < shopCount) {
+    if ((start + parseInt(params.count) - 1) < shopCount) {
       canNext = true;
     }
 
@@ -184,8 +179,8 @@ export const getServerSideProps = async (context) => {
           canPrev,
           canNext,
           available: shopCount,
-          start: parseInt(query.start),
-          end: parseInt(query.start) + shop.length - 1,
+          start: parseInt(start),
+          end: shopCount < (start + 9) ? shopCount : (start + 9),
         },
       },
     };
