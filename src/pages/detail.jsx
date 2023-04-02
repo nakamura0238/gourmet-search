@@ -2,7 +2,6 @@ import React from 'react';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from '../styles/Detail.module.scss';
 import axios from 'axios';
 import {buildDetailRequest} from '../functions/buildRequest';
@@ -88,9 +87,6 @@ export default function Detail(props) {
         <Container maxWidth='md'>
 
           <div className={styles.title_box}>
-            {/* <Link href='/'>
-              <ArrowBackIosIcon fontSize='large' style={{color: '#333333'}}/>
-            </Link> */}
             <button onClick={() => router.back() }>
               <ArrowBackIosIcon fontSize='large' style={{color: '#333333'}}/>
             </button>
@@ -170,19 +166,17 @@ export default function Detail(props) {
 
 export const getServerSideProps = async (context) => {
   try {
-    const url = buildDetailRequest(context.query);
+    const url = buildDetailRequest(context.query.id);
 
     const gourmet = await axios.get(url);
     const shop = gourmet.data.results.shop;
 
     return {
       props: {
-        params: context.query,
         shop: shop[0],
       },
     };
   } catch (error) {
-    console.log(error);
     return {
       redirect: {
         permanent: false,

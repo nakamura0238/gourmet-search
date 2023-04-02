@@ -11,9 +11,7 @@ import TrainIcon from '@mui/icons-material/Train';
 import MapIcon from '@mui/icons-material/Map';
 import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
 import Header from '../components/common/header';
-
 import styles from '../styles/List.module.scss';
-
 import {parseCookies} from 'nookies';
 
 /**
@@ -31,7 +29,6 @@ export default function List(props) {
   const detailPage = (shopId) => {
     const params = {
       id: shopId, // 店ID
-      format: 'json', // レスポンス形式
     };
     router.push({
       pathname: '/detail',
@@ -152,7 +149,6 @@ export const getServerSideProps = async (context) => {
 
     const start = parseInt(context.query.start);
     const url = buildListRequest(params, start);
-    console.log(url);
 
     // ページネーション用フラグ
     let canPrev = false;

@@ -8,10 +8,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import TrainIcon from '@mui/icons-material/Train';
 import MapIcon from '@mui/icons-material/Map';
 import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
-
 import Header from '../components/common/header';
-
-// import styles from '../styles/List.module.scss';
 import styles from '../styles/Favorite.module.scss';
 
 /**
@@ -32,7 +29,6 @@ export default function Favorite() {
   const detailPage = (shopId) => {
     const params = {
       id: shopId, // 店ID
-      format: 'json', // レスポンス形式
     };
     router.push({
       pathname: '/detail',
