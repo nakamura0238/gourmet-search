@@ -11,10 +11,9 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import TrainIcon from '@mui/icons-material/Train';
 import MapIcon from '@mui/icons-material/Map';
 import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import {toast} from 'react-hot-toast';
-import {getIndex} from '../functions/getIndex';
 import Header from '../components/common/header';
+
+import FavoriteButton from '../components/detail/FavoriteButton';
 
 /**
  * Detailコンポーネント
@@ -22,7 +21,6 @@ import Header from '../components/common/header';
  * @return {Component}
  */
 export default function Detail(props) {
-  console.log(props.shop);
   const shopDetail = props.shop;
   const router = useRouter();
 
@@ -39,40 +37,6 @@ export default function Detail(props) {
     {label: '禁煙席', content: shopDetail.non_smoking},
     {label: 'カード決済', content: shopDetail.card},
   ];
-
-  // お気に入り登録
-  const setFavorite = () => {
-    const myStorage = localStorage;
-    const gourmetObject = {
-      id: shopDetail.id,
-      name: shopDetail.name,
-      genre: shopDetail.genre.name,
-      budget: shopDetail.budget.name,
-      access: shopDetail.access,
-      address: shopDetail.address,
-      photo: shopDetail.photo.pc.l,
-    };
-    if (myStorage.getItem('favorite-gourmet')) {
-      // お気に入りリスト取得 (localStorage)
-      const gourmetList = JSON.parse(myStorage.getItem('favorite-gourmet'));
-
-      // 店が登録されているか確認 (添字検索)
-      const found = getIndex(shopDetail.id, gourmetList, 'id');
-
-      if (found == -1) { // 未登録の場合
-        gourmetList.push(gourmetObject);
-        toast.success('お気に入り登録しました');
-      } else { // 登録済みの場合
-        gourmetList.splice(found, 1);
-        toast.error('お気に入り解除しました');
-      }
-      // localStorageに保存
-      myStorage.setItem('favorite-gourmet', JSON.stringify(gourmetList));
-    } else {
-      // localStorageに保存
-      myStorage.setItem('favorite-gourmet', JSON.stringify([gourmetObject]));
-    }
-  };
 
   return (
     <div className={styles.container}>
@@ -107,10 +71,7 @@ export default function Detail(props) {
                 <div className={styles.shop_top_inner}>
                   <p>{shopDetail.genre.name}</p>
                   <h2>{shopDetail.name}</h2>
-                  <Button
-                    variant='outlined'
-                    startIcon={<FavoriteIcon></FavoriteIcon>}
-                    onClick={setFavorite} >お気に入り</Button>
+                  <FavoriteButton shopDetail={shopDetail} />
                 </div>
               </div>
               <div className={styles.access}>

@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import styles from '../styles/Home.module.scss';
 import {useRouter} from 'next/router';
 import axios from 'axios';
+import {setCookie} from 'nookies';
 import {
   Container,
   Button,
@@ -13,8 +13,10 @@ import {
   Select} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import {setCookie} from 'nookies';
+import styles from '../styles/Home.module.scss';
 import Header from '../components/common/header';
+import usePresentPosition from '../hooks/usePresentPosition';
+
 
 /**
  * Homeコンポーネント
@@ -24,47 +26,19 @@ import Header from '../components/common/header';
 export default function Home(props) {
   const router = useRouter();
 
-  const [range, setRange] = useState(3);
-  const [genre, setGenre] = useState('');
-  const [coords, setCoords] = useState(undefined);
-  const [presentPosition, setPresentPosition] = useState('位置情報を取得中です');
+  const [range, setRange] = useState(3); // 検索範囲
+  const [genre, setGenre] = useState(''); // お店ジャンル
 
+  // ジャンル情報
   const genreList = props.genre;
 
-  useEffect(() => {
-    ;(async () => {
-      if (navigator.geolocation) { // navigatorの使用可能チェック
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          setCoords(
-              {
-                // 実際はこちらを使用
-                // lat: position.coords.latitude, // 緯度
-                // lng: position.coords.longitude // 経度
-
-                // 東京都 千代田区 神田花岡町
-                lat: 35.698619, // 緯度
-                lng: 139.772908, // 経度
-              });
-          const address = await axios.get('/api/ReverseGeocode');
-          const addressElement = address.data.Property.AddressElement;
-          setPresentPosition(
-              addressElement[0].Name + ' ' +
-              addressElement[1].Name + ' ' +
-              addressElement[2].Name);
-        });
-      } else { // navigator使用不可
-        setPresentPosition('位置情報が使用できません');
-      }
-    })();
-  }, []);
+  // 位置情報機能の確認と現在位置の取得
+  const {coords, presentPosition} = usePresentPosition();
 
   /**
    * 一覧ページへ遷移
    */
   const listPage = () => {
-    const start = {
-      start: 1,
-    };
     const params = {
       lat: coords.lat, // 緯度
       lng: coords.lng, // 経度
@@ -79,7 +53,7 @@ export default function Home(props) {
     });
     router.push({
       pathname: '/list',
-      query: start,
+      query: {start: 1},
     });
   };
 
@@ -141,14 +115,11 @@ export default function Home(props) {
               onClick={listPage}
               startIcon={<SearchIcon></SearchIcon>}>検索</Button>
 
-
-            <nav>
-              <Link href='/favorite'>
-                <Button
-                  variant='outlined'
-                  startIcon={<FavoriteIcon></FavoriteIcon>}>お気に入り</Button>
-              </Link>
-            </nav>
+            <Link href='/favorite'>
+              <Button
+                variant='outlined'
+                startIcon={<FavoriteIcon></FavoriteIcon>}>お気に入り</Button>
+            </Link>
           </div>
 
         </Container>
@@ -165,11 +136,10 @@ export const getServerSideProps = async (context) => {
     `http://webservice.recruit.co.jp/hotpepper/genre/v1/?key=${process.env.NEXT_PUBLIC_HOT_PEPPER_KEY}&format=json`;
 
   const genre = await axios.get(url);
-  // console.log(genre.data.results.genre);
 
   return {
     props: {
-      genre: genre.data.results.genre,
+      genre: genre.data.results.genre, // お店ジャンル
     },
   };
 };
