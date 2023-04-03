@@ -12,7 +12,6 @@ import ListItem from '../components/common/ListItem';
 import {buildListRequest} from '../functions/buildRequest';
 import styles from '../styles/List.module.scss';
 
-
 /**
  * Listコンポーネント
  * @param {*} props

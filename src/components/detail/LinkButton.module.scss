@@ -1,0 +1,9 @@
+.link_btn_box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 20px 15%;
+  @media screen and (max-width: 500px) {
+    padding: 20px 0;
+    }
+}

@@ -1,0 +1,11 @@
+.data_table {
+  border-collapse: collapse;
+  td {
+    padding: 10px;
+    border: 1px solid #AAAAAA;
+  }
+  .label {
+    background-color: #FFECB3;
+    white-space: nowrap;
+  }
+}
