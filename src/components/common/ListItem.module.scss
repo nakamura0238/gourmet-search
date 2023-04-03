@@ -1,25 +1,10 @@
-.title_box {
+.shop_card {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  margin-bottom: 20px;
-  h2 {
-    font-size: 1.5rem;
-  }
-}
-
-.fav_card_container {
-  display: flex;
+  @media screen and (max-width: 500px) {
   flex-direction: column;
-  align-items: center;
+  }
   gap: 20px;
-  width: 100%;
-  padding-bottom: 20px;
-}
-
-.fav_card {
-  display: flex;
-  flex-direction: row;
   width: 100%;
   padding: 20px;
   box-shadow:  1px 1px 4px gray;
@@ -31,9 +16,7 @@
   }
 }
 
-
-.fav_card_inner {
-  padding-left: 20px;
+.shop_card_inner {
   .genre {
     padding-bottom: 10px;
   }

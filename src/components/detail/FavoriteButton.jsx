@@ -12,11 +12,16 @@ const FavoriteButton = (props) => {
     const gourmetObject = {
       id: shopDetail.id,
       name: shopDetail.name,
-      genre: shopDetail.genre.name,
-      budget: shopDetail.budget.name,
+      genre: {name: shopDetail.genre.name},
+      budget: {name: shopDetail.budget.name},
       access: shopDetail.access,
       address: shopDetail.address,
-      photo: shopDetail.photo.pc.l,
+      photo: {
+        pc: {
+          l: shopDetail.photo.pc.l,
+        },
+      }
+      ,
     };
     if (myStorage.getItem('favorite-gourmet')) {
       // お気に入りリスト取得 (localStorage)
