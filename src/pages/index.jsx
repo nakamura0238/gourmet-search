@@ -7,13 +7,14 @@ import {setCookie} from 'nookies';
 import {Container, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import styles from '../styles/Home.module.scss';
-import usePresentPosition from '../hooks/usePresentPosition';
-
+// components
 import Header from '../components/common/Header';
 import SelectRange from '../components/index/SelectRange';
 import SelectGenre from '../components/index/SelectGenre';
-
+// css
+import styles from '../styles/Home.module.scss';
+// hooks
+import usePresentPosition from '../hooks/usePresentPosition';
 
 /**
  * Homeコンポーネント
@@ -22,7 +23,6 @@ import SelectGenre from '../components/index/SelectGenre';
  */
 export default function Home(props) {
   const router = useRouter();
-
   const [range, setRange] = useState(3); // 検索範囲
   const [genre, setGenre] = useState(''); // お店ジャンル
 
@@ -45,7 +45,7 @@ export default function Home(props) {
       format: 'json', // レスポンス形式
     };
     setCookie(null, 'gourmetInfo', JSON.stringify(params), {
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: 60 * 60 * 24 * 30, // 30日間
     });
     router.push({
       pathname: '/list',
@@ -59,11 +59,8 @@ export default function Home(props) {
         <title>Gourmet Search</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <Header></Header>
-
+      <Header />
       <main className={styles.main}>
-
         <Container maxWidth="md">
           <p>近くのレストランを検索できます</p>
           <p>周辺のお店を探す</p>
@@ -72,38 +69,30 @@ export default function Home(props) {
             <SelectRange
               range={range}
               setRange={setRange} />
-
             <SelectGenre
               genreList={genreList}
               genre={genre}
               setGenre={setGenre} />
-
             <Button
               disabled={coords === undefined}
               variant='contained'
               onClick={listPage}
               startIcon={<SearchIcon></SearchIcon>}>検索</Button>
-
             <Link href='/favorite'>
               <Button
                 variant='outlined'
                 startIcon={<FavoriteIcon></FavoriteIcon>}>お気に入り</Button>
             </Link>
           </div>
-
         </Container>
       </main>
-
-      <footer className={styles.footer}>
-      </footer>
     </div>
   );
 }
 
 export const getServerSideProps = async (context) => {
-  const url =
-    `http://webservice.recruit.co.jp/hotpepper/genre/v1/?key=${process.env.NEXT_PUBLIC_HOT_PEPPER_KEY}&format=json`;
-
+  // お店ジャンル取得
+  const url = `http://webservice.recruit.co.jp/hotpepper/genre/v1/?key=${process.env.NEXT_PUBLIC_HOT_PEPPER_KEY}&format=json`;
   const genre = await axios.get(url);
 
   return {

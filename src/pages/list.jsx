@@ -5,12 +5,15 @@ import axios from 'axios';
 import {parseCookies} from 'nookies';
 import {Container} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
+// components
 import Header from '../components/common/Header';
 import PagingButton from '../components/list/PagingButton';
 import ListItem from '../components/common/ListItem';
-import {buildListRequest} from '../functions/buildRequest';
+// css
+import commonStyles from '../styles/Common.module.scss';
 import styles from '../styles/List.module.scss';
+// functions
+import {buildListRequest} from '../functions/buildRequest';
 
 /**
  * Listコンポーネント
@@ -18,30 +21,25 @@ import styles from '../styles/List.module.scss';
  * @return {Component}
  */
 export default function List(props) {
-  const query = props.params;
   const gourmetList = props.shop;
   const paging = props.paging;
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Gourmet Search | 周辺のお店</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <Header></Header>
-
+      <Header />
       <main className={styles.main}>
         <Container maxWidth="md">
-          <div className={styles.title_box}>
+          <div className={commonStyles.title_box}>
             <Link href='/'>
               <ArrowBackIosIcon fontSize='large' style={{color: '#333333'}}/>
             </Link>
             <h2>周辺のお店</h2>
           </div>
-
-          <PagingButton start={query.start} paging={paging} />
-
+          <PagingButton start={paging.start} paging={paging} />
           <div className={styles.card_container}>
             {gourmetList.map((val, i) => {
               return (
@@ -49,14 +47,9 @@ export default function List(props) {
               );
             })}
           </div>
-
-          <PagingButton start={query.start} paging={paging} />
-
+          <PagingButton start={paging.start} paging={paging} />
         </Container>
       </main>
-
-      <footer className={styles.footer}>
-      </footer>
     </div>
   );
 }
@@ -68,18 +61,15 @@ export const getServerSideProps = async (context) => {
     const params = JSON.parse(cookie.gourmetInfo);
 
     const start = parseInt(context.query.start);
-    const url = buildListRequest(params, start);
-
-    // ページネーション用フラグ
-    let canPrev = false;
-    let canNext = false;
 
     // お店取得
+    const url = buildListRequest(params, start);
     const gourmet = await axios.get(url);
-    const shop = gourmet.data.results.shop;
     const shopCount = gourmet.data.results.results_available;
 
     // ページネーション判定
+    let canPrev = false;
+    let canNext = false;
     if ((start - parseInt(params.count)) > 0) {
       canPrev = true;
     }
@@ -89,13 +79,12 @@ export const getServerSideProps = async (context) => {
 
     return {
       props: {
-        params: context.query,
-        shop,
+        shop: gourmet.data.results.shop,
         paging: {
           canPrev,
           canNext,
           available: shopCount,
-          start: parseInt(start),
+          start: start,
           end: shopCount < (start + 9) ? shopCount : (start + 9),
         },
       },
