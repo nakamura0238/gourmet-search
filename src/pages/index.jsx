@@ -8,9 +8,10 @@ import {Container, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 // components
-import Header from '../components/common/Header';
 import SelectRange from '../components/index/SelectRange';
 import SelectGenre from '../components/index/SelectGenre';
+// Layout
+import Layout from '../Layout/Layout';
 // css
 import styles from '../styles/Home.module.scss';
 // hooks
@@ -54,13 +55,12 @@ export default function Home(props) {
   };
 
   return (
-    <div className={styles.container}>
+    <Layout>
       <Head>
         <title>Gourmet Search</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <main className={styles.main}>
+      <main>
         <Container maxWidth="md">
           <p>近くのレストランを検索できます</p>
           <p>周辺のお店を探す</p>
@@ -86,7 +86,7 @@ export default function Home(props) {
           </div>
         </Container>
       </main>
-    </div>
+    </Layout>
   );
 }
 

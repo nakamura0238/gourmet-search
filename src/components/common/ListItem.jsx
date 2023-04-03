@@ -29,13 +29,20 @@ const ListItem = (props) => {
     <div
       className={styles.shop_card}
       onClick={() => detailPage(val.id)}>
-      <Image
-        src={val.photo.pc.l}
-        width={150}
-        height={150}
-        alt={val.name}
-        style={{border: '1px solid #CCCCCC'}}
-      />
+      <div>
+        <Image
+          src={val.photo.pc.l}
+          width={200}
+          height={200}
+          alt={val.name}
+          style={{border: '1px solid #CCCCCC'}}
+        />
+        <p style={{
+          paddingTop: '5px',
+          fontSize: '0.7rem'}}>
+            【画像提供：ホットペッパー グルメ】
+        </p>
+      </div>
       <div className={styles.shop_card_inner}>
         <p className={styles.genre}>{val.genre.name}</p>
         <p className={styles.name}>{val.name}</p>

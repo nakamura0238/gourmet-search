@@ -5,10 +5,11 @@ import axios from 'axios';
 import {Container} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 // components
-import Header from '../components/common/Header';
 import ShopOverview from '../components/detail/ShopOverView';
 import LinkButton from '../components/detail/LinkButton';
 import ShopDataTable from '../components/detail/ShopDataTable';
+// Layout
+import Layout from '../Layout/Layout';
 // css
 import commonStyles from '../styles/Common.module.scss';
 import styles from '../styles/Detail.module.scss';
@@ -25,12 +26,11 @@ export default function Detail(props) {
   const router = useRouter();
 
   return (
-    <div>
+    <Layout>
       <Head>
         <title>Gourmet Search | お店詳細</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       <main>
         <Container maxWidth='md'>
           <div className={commonStyles.title_box}>
@@ -47,7 +47,7 @@ export default function Detail(props) {
           </div>
         </Container>
       </main>
-    </div>
+    </Layout>
   );
 }
 

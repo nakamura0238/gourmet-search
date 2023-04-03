@@ -6,9 +6,10 @@ import {parseCookies} from 'nookies';
 import {Container} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 // components
-import Header from '../components/common/Header';
 import PagingButton from '../components/list/PagingButton';
 import ListItem from '../components/common/ListItem';
+// Layout
+import Layout from '../Layout/Layout';
 // css
 import commonStyles from '../styles/Common.module.scss';
 import styles from '../styles/List.module.scss';
@@ -25,13 +26,12 @@ export default function List(props) {
   const paging = props.paging;
 
   return (
-    <div>
+    <Layout>
       <Head>
         <title>Gourmet Search | 周辺のお店</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <main className={styles.main}>
+      <main>
         <Container maxWidth="md">
           <div className={commonStyles.title_box}>
             <Link href='/'>
@@ -50,7 +50,7 @@ export default function List(props) {
           <PagingButton start={paging.start} paging={paging} />
         </Container>
       </main>
-    </div>
+    </Layout>
   );
 }
 

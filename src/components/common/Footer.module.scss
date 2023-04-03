@@ -1,0 +1,18 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: auto;
+  padding-bottom: 20px;
+  .credit_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      padding: 0 15px;
+      border-bottom: 1px solid #AAAAAA;
+      line-height: 1.4rem;
+    }
+  }
+}

@@ -4,8 +4,9 @@ import Link from 'next/link';
 import {Container} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 // components
-import Header from '../components/common/Header';
 import ListItem from '../components/common/ListItem';
+// Layout
+import Layout from '../Layout/Layout';
 // css
 import commonStyles from '../styles/Common.module.scss';
 import styles from '../styles/List.module.scss';
@@ -26,12 +27,11 @@ export default function Favorite() {
 
 
   return (
-    <div>
+    <Layout>
       <Head>
         <title>Gourmet Search | お気に入り</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       <main>
         <Container maxWidth='md'>
           <div className={commonStyles.title_box}>
@@ -49,6 +49,6 @@ export default function Favorite() {
           </div>
         </Container>
       </main>
-    </div>
+    </Layout>
   );
 }
