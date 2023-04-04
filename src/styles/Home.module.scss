@@ -5,3 +5,47 @@
   gap: 1.5rem;
   padding: 1.5rem 0;
 }
+
+.app_info {
+  display: flex;
+  flex-direction: column;
+  p {
+    text-align: center;
+  }
+}
+
+.app_description {
+  padding: 2rem 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.app_sub_description {
+  padding-bottom: 3rem;
+  font-size: 1.2rem;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.update_position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 1rem;
+  .presentPosition {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    p {
+      padding: 0 20px;
+      font-size: 1.1rem;
+    }
+    .label {
+      padding: 5px 15px;
+      border: 1px solid #aaaaaa;
+      white-space: nowrap;
+    }
+  }
+}

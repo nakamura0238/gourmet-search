@@ -31,19 +31,25 @@ export default function Home(props) {
   const genreList = props.genre;
 
   // 位置情報機能の確認と現在位置の取得
-  const {coords, presentPosition} = usePresentPosition();
+  const {coords, presentPosition, updateGeolocation} = usePresentPosition();
 
-  /**
-   * 一覧ページへ遷移
-   */
+  // 一覧ページへ遷移
   const listPage = () => {
+    const searchGenre = genreList.filter((element) =>
+      element.code == genre,
+    );
     const params = {
       lat: coords.lat, // 緯度
       lng: coords.lng, // 経度
-      range, // 半径
-      genre, // お店ジャンル
+      rage: range, // 半径
+      genre: genre, // お店ジャンル
       count: 10, // 最大取得数
       format: 'json', // レスポンス形式
+      searchData: {
+        presentPosition: presentPosition,
+        range: range,
+        genre: searchGenre.length > 0 ? searchGenre[0].name : '未選択',
+      },
     };
     setCookie(null, 'gourmetInfo', JSON.stringify(params), {
       maxAge: 60 * 60 * 24 * 30, // 30日間
@@ -62,9 +68,22 @@ export default function Home(props) {
       </Head>
       <main>
         <Container maxWidth="md">
-          <p>近くのレストランを検索できます</p>
-          <p>周辺のお店を探す</p>
-          <p>現在位置：{presentPosition}</p>
+          <div className={styles.app_info}>
+            <p className={styles.app_description}>近くのレストランを検索</p>
+            <p className={styles.app_sub_description}>
+              検索範囲とジャンルを選んで<wbr />検索しましょう
+            </p>
+            <div className={styles.update_position}>
+              <div className={styles.presentPosition}>
+                <p className={styles.label}>現在位置</p><p>{presentPosition}</p>
+              </div>
+              <Button
+                variant='outlined'
+                size='small'
+                onClick={updateGeolocation}>現在位置を更新</Button>
+            </div>
+          </div>
+
           <div className={styles.input_layout}>
             <SelectRange
               range={range}
