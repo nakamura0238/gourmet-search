@@ -8,6 +8,7 @@ import {Container, Button} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 // components
+import AppInfo from '../components/index/AppInfo';
 import SelectRange from '../components/index/SelectRange';
 import SelectGenre from '../components/index/SelectGenre';
 // Layout
@@ -31,7 +32,7 @@ export default function Home(props) {
   const genreList = props.genre;
 
   // 位置情報機能の確認と現在位置の取得
-  const {coords, presentPosition, updateGeolocation} = usePresentPosition();
+  const {coords, presentPosition} = usePresentPosition();
 
   // 一覧ページへ遷移
   const listPage = () => {
@@ -68,22 +69,7 @@ export default function Home(props) {
       </Head>
       <main>
         <Container maxWidth="md">
-          <div className={styles.app_info}>
-            <p className={styles.app_description}>近くのレストランを検索</p>
-            <p className={styles.app_sub_description}>
-              検索範囲とジャンルを選んで<wbr />検索しましょう
-            </p>
-            <div className={styles.update_position}>
-              <div className={styles.presentPosition}>
-                <p className={styles.label}>現在位置</p><p>{presentPosition}</p>
-              </div>
-              <Button
-                variant='outlined'
-                size='small'
-                onClick={updateGeolocation}>現在位置を更新</Button>
-            </div>
-          </div>
-
+          <AppInfo />
           <div className={styles.input_layout}>
             <SelectRange
               range={range}
