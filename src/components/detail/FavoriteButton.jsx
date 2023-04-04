@@ -42,6 +42,7 @@ const FavoriteButton = (props) => {
     } else {
       // localStorageに保存
       myStorage.setItem('favorite-gourmet', JSON.stringify([gourmetObject]));
+      toast.success('お気に入り登録しました');
     }
   };
 

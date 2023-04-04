@@ -6,3 +6,19 @@
   width: 100%;
   padding-bottom: 20px;
 }
+
+.info_box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  p {
+    padding-left: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+.unregistered {
+  font-size: 1.2rem;
+}
