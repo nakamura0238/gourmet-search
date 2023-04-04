@@ -42,7 +42,7 @@ export default function Home(props) {
     const params = {
       lat: coords.lat, // 緯度
       lng: coords.lng, // 経度
-      rage: range, // 半径
+      range: range, // 半径
       genre: genre, // お店ジャンル
       count: 10, // 最大取得数
       format: 'json', // レスポンス形式
