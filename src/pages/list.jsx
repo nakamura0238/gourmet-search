@@ -7,6 +7,7 @@ import {Container} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 // components
 import PagingButton from '../components/list/PagingButton';
+import SearchData from '../components/list/SearchData';
 import ListItem from '../components/common/ListItem';
 // Layout
 import Layout from '../Layout/Layout';
@@ -24,6 +25,7 @@ import {buildListRequest} from '../functions/buildRequest';
 export default function List(props) {
   const gourmetList = props.shop;
   const paging = props.paging;
+  const searchData = props.searchData;
 
   return (
     <Layout>
@@ -39,6 +41,7 @@ export default function List(props) {
             </Link>
             <h2>周辺のお店</h2>
           </div>
+          <SearchData searchData={searchData} />
           <PagingButton start={paging.start} paging={paging} />
           <div className={styles.card_container}>
             {gourmetList.map((val, i) => {
@@ -87,6 +90,7 @@ export const getServerSideProps = async (context) => {
           start: start,
           end: shopCount < (start + 9) ? shopCount : (start + 9),
         },
+        searchData: params.searchData,
       },
     };
   } catch (error) {

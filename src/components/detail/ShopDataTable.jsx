@@ -16,6 +16,7 @@ const ShopDataTable = (props) => {
     {label: '住所', content: shopDetail.address},
     {label: '営業時間', content: shopDetail.open},
     {label: '定休日', content: shopDetail.close},
+    {label: '予算', content: shopDetail.budget.name},
     {label: 'コース', content: shopDetail.course},
     {label: '飲み放題', content: shopDetail.free_drink},
     {label: '食べ放題', content: shopDetail.free_food},
