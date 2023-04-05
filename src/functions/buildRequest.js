@@ -1,5 +1,6 @@
 const API_KEY = process.env.NEXT_PUBLIC_HOT_PEPPER_KEY;
 
+// お店一覧取得URL
 export const buildListRequest = (params, start) => {
   let url = `https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${API_KEY}`;
 
@@ -21,6 +22,7 @@ export const buildListRequest = (params, start) => {
   return url;
 };
 
+// お店詳細取得URL
 export const buildDetailRequest = (id) => {
   const url = `https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=${API_KEY}&id=${id}&format=json`;
 

@@ -3,16 +3,23 @@ import {useRouter} from 'next/router';
 import {Button} from '@mui/material';
 import styles from './PagingButton.module.scss';
 
+/**
+ * ページング用ボタン
+ * @param {*} props
+ * @property {number} start
+ * @property {Object} paging
+ * @return {Component}
+ */
 const PagingButton = (props) => {
   const router = useRouter();
-  const start = props.start;
+  const start = parseInt(props.start);
   const pagingInfo = props.paging;
 
   const nextPage = () => {
     router.push({
       pathname: '/list',
       query: {
-        start: parseInt(start) + 10,
+        start: start + 10,
       },
     });
   };
@@ -21,7 +28,7 @@ const PagingButton = (props) => {
     router.push({
       pathname: '/list',
       query: {
-        start: parseInt(start) - 10,
+        start: start - 10,
       },
     });
   };

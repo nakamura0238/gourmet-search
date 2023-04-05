@@ -15,11 +15,10 @@ const PositionContext = ({children}) => {
         {children}
       </PresentPositionContext.Provider>
     </CoordsContext.Provider>
-
   );
 };
 
+export default PositionContext;
+
 export const useCoordsContext = () => useContext(CoordsContext);
 export const usePositionContext = () => useContext(PresentPositionContext);
-
-export default PositionContext;

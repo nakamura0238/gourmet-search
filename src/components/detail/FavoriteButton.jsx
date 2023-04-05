@@ -4,6 +4,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import {toast} from 'react-hot-toast';
 import {getIndex} from '../../functions/getIndex';
 
+/**
+ * お気に入り登録
+ * @param {*} props
+ * @property {Object} shopDetail
+ * @return {Component}
+ */
 const FavoriteButton = (props) => {
   const shopDetail = props.shopDetail;
   // お気に入り登録

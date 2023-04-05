@@ -1,6 +1,12 @@
 import React from 'react';
 import styles from './SearchData.module.scss';
 
+/**
+ * 現在の検索条件を表示
+ * @param {*} props
+ * @property {Object} searchData
+ * @return {Component}
+ */
 const SearchData = (props) => {
   const searchData = props.searchData;
   const searchRange = {

@@ -3,6 +3,12 @@ import {Button} from '@mui/material';
 import {toast} from 'react-hot-toast';
 import styles from './ResetFavorite.module.scss';
 
+/**
+ * お気に入りリセット
+ * @param {*} props
+ * @property {Dispatch} setFavoriteList
+ * @return {Component}
+ */
 const ResetFavorite = (props) => {
   const [modal, setModal] = useState(undefined);
 

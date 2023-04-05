@@ -51,7 +51,8 @@ const ShopOverview = (props) => {
         <CurrencyYenIcon />
         <p>{shopDetail.budget.average}</p>
       </div>
-    </div>);
+    </div>
+  );
 };
 
 export default ShopOverview;
