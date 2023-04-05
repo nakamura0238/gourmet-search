@@ -1,13 +1,22 @@
-import {useState, useEffect} from 'react';
+import {useEffect} from 'react';
 import axios from 'axios';
+import {
+  useCoordsContext,
+  usePositionContext} from '../contexts/PositionContext';
 
+/**
+ * 位置情報取得
+ * @return {Object} 緯度経度
+ * @return {String} 現在地
+ * @return {function} 現在地更新関数
+ */
 const usePresentPosition = () => {
-  const [coords, setCoords] = useState(undefined);
-  const [presentPosition, setPresentPosition] = useState('位置情報を取得中です');
+  const [coords, setCoords] = useCoordsContext();
+  const [presentPosition, setPresentPosition] = usePositionContext();
 
   const updateGeolocation = async () => {
     setCoords(undefined);
-    setPresentPosition('位置情報を取得中です');
+    setPresentPosition('現在地を取得中です');
     if (navigator.geolocation) { // navigatorの使用可能チェック
       navigator.geolocation.getCurrentPosition(async (position) => {
         setCoords(

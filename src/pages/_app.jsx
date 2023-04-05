@@ -5,6 +5,7 @@ import Router from 'next/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import {Toaster} from 'react-hot-toast';
+import PositionContext from '../contexts/PositionContext';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -16,10 +17,10 @@ Router.events.on('routeChangeError', () => NProgress.done());
  */
 function MyApp({Component, pageProps}) {
   return (
-    <>
+    <PositionContext>
       <Component {...pageProps} />
       <Toaster />
-    </>
+    </PositionContext>
   );
 }
 

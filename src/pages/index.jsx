@@ -15,11 +15,13 @@ import SelectGenre from '../components/index/SelectGenre';
 import Layout from '../Layout/Layout';
 // css
 import styles from '../styles/Home.module.scss';
-// hooks
-import usePresentPosition from '../hooks/usePresentPosition';
+// context
+import {
+  useCoordsContext,
+  usePositionContext} from '../contexts/PositionContext';
 
 /**
- * Homeコンポーネント
+ * Homeコンポーネント (検索画面)
  * @param {*} props
  * @return {Component}
  */
@@ -28,11 +30,11 @@ export default function Home(props) {
   const [range, setRange] = useState(3); // 検索範囲
   const [genre, setGenre] = useState(''); // お店ジャンル
 
+  const [coords] = useCoordsContext();
+  const [presentPosition] = usePositionContext();
+
   // ジャンル情報
   const genreList = props.genre;
-
-  // 位置情報機能の確認と現在位置の取得
-  const {coords, presentPosition} = usePresentPosition();
 
   // 一覧ページへ遷移
   const listPage = () => {
@@ -71,6 +73,7 @@ export default function Home(props) {
         <Container maxWidth="md">
           <AppInfo />
           <div className={styles.input_layout}>
+            <p>検索範囲とジャンルを選んで検索しましょう</p>
             <SelectRange
               range={range}
               setRange={setRange} />
