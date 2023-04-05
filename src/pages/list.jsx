@@ -44,11 +44,14 @@ export default function List(props) {
           <SearchData searchData={searchData} />
           <PagingButton start={paging.start} paging={paging} />
           <div className={styles.card_container}>
-            {gourmetList.map((val, i) => {
-              return (
-                <ListItem key={i} val={val} />
-              );
-            })}
+            {gourmetList.length > 0 ?
+              gourmetList.map((val, i) => {
+                return (
+                  <ListItem key={i} val={val} />
+                );
+              }) :
+              <p className={styles.unregistered}>お店が見つかりませんでした</p>
+            }
           </div>
           <PagingButton start={paging.start} paging={paging} />
         </Container>

@@ -54,7 +54,7 @@ export default function Favorite() {
                   <ListItem key={i} val={val} />
                 );
               }):
-              <p className={styles.unregistered}>登録されていません</p>
+              <p className={styles.unregistered}>お店が登録されていません</p>
             }
           </div>
         </Container>
