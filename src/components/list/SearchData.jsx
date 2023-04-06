@@ -21,10 +21,6 @@ const SearchData = (props) => {
     <table className={styles.search_data_box}>
       <tbody>
         <tr>
-          <td className={styles.label}>現在位置</td>
-          <td>{searchData.presentPosition}</td>
-        </tr>
-        <tr>
           <td className={styles.label}>検索範囲</td>
           <td>{searchRange[searchData.range]}</td>
         </tr>

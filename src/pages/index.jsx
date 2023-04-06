@@ -16,9 +16,7 @@ import Layout from '../Layout/Layout';
 // css
 import styles from '../styles/Home.module.scss';
 // context
-import {
-  useCoordsContext,
-  usePositionContext} from '../contexts/PositionContext';
+import {useCoordsContext} from '../contexts/PositionContext';
 
 /**
  * Homeコンポーネント (検索画面)
@@ -31,7 +29,6 @@ export default function Home(props) {
   const [genre, setGenre] = useState(''); // お店ジャンル
 
   const [coords] = useCoordsContext();
-  const [presentPosition] = usePositionContext();
 
   // ジャンル情報
   const genreList = props.genre;
@@ -49,7 +46,6 @@ export default function Home(props) {
       count: 10, // 最大取得数
       format: 'json', // レスポンス形式
       searchData: {
-        presentPosition: presentPosition,
         range: range,
         genre: searchGenre.length > 0 ? searchGenre[0].name : '未選択',
       },
