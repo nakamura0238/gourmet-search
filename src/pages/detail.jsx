@@ -5,7 +5,7 @@ import axios from 'axios';
 import {Container} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 // components
-import ShopOverview from '../components/detail/ShopOverView';
+import ShopOverView from '../components/detail/ShopOverView';
 import LinkButton from '../components/detail/LinkButton';
 import ShopDataTable from '../components/detail/ShopDataTable';
 // Layout
@@ -40,7 +40,7 @@ export default function Detail(props) {
             <h2>お店の詳細情報</h2>
           </div>
           <div>
-            <ShopOverview shopDetail={shopDetail} />
+            <ShopOverView shopDetail={shopDetail} />
             <LinkButton shopDetail={shopDetail} />
             <p className={styles.shop_data}>店舗情報</p>
             <ShopDataTable shopDetail={shopDetail} />
