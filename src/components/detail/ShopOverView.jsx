@@ -49,7 +49,7 @@ const ShopOverview = (props) => {
       </div>
       <div className={styles.budget}>
         <CurrencyYenIcon />
-        <p>{shopDetail.budget.average}</p>
+        <p>{shopDetail.budget.name}</p>
       </div>
     </div>
   );
